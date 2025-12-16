@@ -18,5 +18,5 @@
 ## 1. CYCLE
 <details>
 <summary>1. 와이이 프레임</summary>
-![alt text](/images/frame01.png)
+![alt text](images/frame01.png)
 </details>

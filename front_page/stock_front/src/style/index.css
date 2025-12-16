@@ -1,0 +1,79 @@
+*, *::before,*::after{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+:root {
+  /* 아주 연한 베이지 - 가장 많이 씀 */
+  --claude-dark-bg: #212121;      /* 메인 배경 */
+  --claude-dark-surface: #2f2f2f; /* 카드/메시지 배경 */
+  --claude-dark-text: #ececec;    /* 텍스트 */
+  
+  --bg-oatmeal-1: #faf8f5; 
+  --bg-oatmeal-2: #f5f3f0;
+  --bg-oatmeal-3: #f0ede8;
+  
+  /* 약간 더 진한 베이지 */
+  --bg-warm-1: #fdfcfb;
+  --bg-warm-2: #f8f6f3;
+  --bg-warm-3: #f3f1ed;
+  
+  /* 크림/아이보리 */
+  --bg-cream-1: #fffdf7;
+  --bg-cream-2: #faf8f2;
+  --bg-cream-3: #f5f3ed;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5;
+
+  user-select: none; /* 텍스트 선택 방지 */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */  
+}
+
+body{
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  
+  /* 배경색 적용 */
+  background-color: var(--claude-dark-bg);  /* 오트밀 */
+  
+  /* 폰트도 지정 */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 
+               'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  color: var(--claude-dark-text);  /* 텍스트 색상 */
+}
+
+#root {
+  min-height: 100vh;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

@@ -1,0 +1,354 @@
+.favorite-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 30%;
+  background-color: white;
+  border-right: 2px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 24px;
+  padding-top: 16px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  min-height: 100px;
+  position: relative;
+  /* 추가 */
+}
+
+.sidebar-header .tool-set {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 12px;
+  position: absolute;
+  right: 16px;
+}
+
+.sidebar-header .name {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 0;
+  color: black;
+  margin-top: auto;
+}
+
+.sidebar-header .tool-set button {
+  width: auto;
+  padding: 0 16px;
+  height: 2.5rem;
+  border-radius: 8px;
+  background-color: #2d2a27;
+  color: #f3f4f6;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #2d2a27;
+  cursor: pointer;
+}
+
+.sidebar-header .tool-set button:hover {
+  background-color: #1a1816;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border-color: #000000;
+}
+
+.sidebar-header .tool-set button:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition: all 0.1s ease;
+}
+
+.sidebar-header .tool-set .icon-btn {
+  background-color: transparent;
+  border-color: transparent;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #6b7280;
+  /* 아이콘 기본 색상 (회색) */
+}
+
+.sidebar-header .tool-set .icon-btn svg {
+  width: 20px;
+  height: 20px;
+  transition: all 0.3s ease;
+}
+
+/* 호버 이펙트 */
+.sidebar-header .tool-set .icon-btn:hover {
+  color: white;
+  transform: rotate(90deg);
+}
+
+.sidebar-header .tool-set .icon-btn:hover svg {
+  transform: scale(1.15);
+  /* 아이콘 크기 증가 */
+}
+
+/* 클릭 이펙트 */
+.sidebar-header .tool-set .icon-btn:active {
+  transform: rotate(90deg) scale(0.9);
+  transition: all 0.1s ease;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  height: 2rem;
+  width: 100%;
+  font-size: 1rem;
+  cursor: default;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  transition: border-bottom ease-in-out 0.2s;
+  padding: 8px 4px;
+}
+
+.search-box input:focus {
+  border-bottom: 2px solid #333;
+}
+
+.favorite-list {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.favorite-list-item {
+  width: 100%;
+  padding: 16px 20px;
+  color: black;
+  border: none;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  background-color: white;
+  border-left: 4px solid transparent;
+}
+
+.favorite-list-item .basic-info {
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.favorite-list-item .basic-info .title {
+  font-size: 1.1rem;
+  color: #2d2a27;
+  font-weight: 600;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  flex: 1;
+  /* 남은 공간 차지 */
+  min-width: 0;
+  /* flex ellipsis를 위해 필요 */
+}
+
+.favorite-list-item .basic-info .quantity {
+  font-size: 0.95rem;
+  color: #6b7280;
+  /* 회색 톤 */
+  background-color: #f3f4f6;
+  /* 배경 추가 */
+  padding: 4px 10px;
+  border-radius: 12px;
+  /* 둥근 뱃지 스타일 */
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+
+.favorite-list-item .create-date {
+  font-size: 0.75rem;
+  text-align: right;
+  color: #9ca3af;
+}
+
+.favorite-list-item:hover {
+  background-color: #f9fafb;
+  border-left: 6px solid #3CB371;
+}
+
+.favorite-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.favorite-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.favorite-list::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 4px;
+}
+
+/* contents */
+.contents {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: #f5f5f5;
+}
+
+.contents .header {
+  height: 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3%;
+  gap: 3%;
+  background-color: #1a1a1a;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.contents .header .search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* 세로 중앙 정렬 */
+  justify-content: space-between;
+  gap: 20px;
+  /* h1과 input 사이 간격 */
+  flex: 1;
+}
+
+.contents .header .search h1 {
+  font-size: 2rem;
+  margin: 0;
+  white-space: nowrap;
+  /* 줄바꿈 방지 */
+}
+
+.contents .header .search input {
+  height: 2.5rem;
+  width: 200px;
+  /* 고정 너비 */
+  font-size: 1rem;
+  cursor: text;
+  color: white;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #333;
+  transition: border-bottom ease-in-out 0.2s;
+  padding: 8px 4px;
+  background-color: transparent;
+}
+
+.contents .header .search input:focus {
+  border-bottom: 2px solid #ddd;
+}
+
+
+.contents .header button {
+  width: 10%;
+  height: 2.5rem;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+  color: #2d2a27;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #e5e7eb;
+}
+
+.contents .header button:hover {
+  background-color: #e5e7eb;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+}
+
+.contents .header button:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.1s ease;
+}
+
+.contents .stock-list {
+  height: 90%;
+  width: 100%;
+}
+
+.stock-list-item {
+  width: 100%;
+  padding: 16px 2px;
+  color: #D8D9DA;
+  border: none;
+  border-bottom: 1px solid #e0e0e0;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  background-color: #61677A;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stock-list-item .title {
+  font-weight: 800;
+  width: 10%;
+}
+
+.stock-list-item .price-frame {
+  width: 15%;
+  font-weight: 600;
+  display: flex;
+  flex-direction: row;
+  gap: 2%;
+}
+
+.stock-list-item:hover {
+  color: black;
+  background-color: #D8D9DA;
+}
+
+.stock-list-item:active {
+  background-color: #e8e8e8;
+}
+
+.stock-list-item.selected {
+  background-color: #e0e0e0;
+}
+
+
+.stock-list .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.stock-list .empty-state p {
+  margin: 0;
+  font-size: 18px;
+}
+
+.stock-list .empty-state .sub-text {
+  font-size: 14px;
+  color: #999;
+  margin-top: 8px;
+}
