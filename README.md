@@ -11,12 +11,12 @@
 
 <details>
   <summary>1. CYCEL</summary>
-  1. 1주차 : 와이어 프레임 작성, ERD 작성, 프론트 개발 시작 
+  1. 1주차 : 와이어 프레임 작성, ERD 작성, 프론트 개발 시작   <br>
   2. 2주차 : 프론트 개발 시작 및 백엔드 개발 
 </details>
 
 ## 1. CYCLE
 <details>
 <summary>1. 와이이 프레임</summary>
-![alt text](/images/image.png)
+![alt text](/images/frame01.png)
 </details>
