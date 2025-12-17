@@ -1,7 +1,46 @@
-import { useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { IoSettingsSharp, IoAddSharp } from 'react-icons/io5';
 import './Favorite.css'
 
+
+function ContextMenu({ position, onClose, onEdit, onDelete, onCopyLink }) {
+    const menuRef = useRef(null)
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                onClose()
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [onClose])
+
+    return (
+        <div
+            ref={menuRef}
+            className="context-menu"
+            style={{
+                top: position.y,
+                left: position.x,
+                position: 'absolute',
+                zIndex: 1000
+            }}
+        >
+            <div className="context-menu-item" onClick={onEdit}>
+                <span>✏️ 이름 바꾸기</span>
+                <span className="shortcut">⌘⇧R</span>
+            </div>
+            <div className="context-menu-item" onClick={onCopyLink}>
+                <span>🔗 링크 복사</span>
+            </div>
+            <div className="context-menu-item" onClick={onDelete}>
+                <span>🗑️ 삭제</span>
+            </div>
+        </div>
+    );
+}
 
 function FavoriteListItem({ title, quantity, createDate, onClick }) {
     return (
@@ -16,12 +55,9 @@ function FavoriteListItem({ title, quantity, createDate, onClick }) {
 }
 
 function StockListItem({ ticker, currentPrice, percent }) {
-
     const isSuccess = ticker != null && currentPrice != null && percent != null;
 
-
     return (
-
         isSuccess ?
             <div className="stock-list-item">
                 <div className="title">
@@ -41,15 +77,25 @@ function StockListItem({ ticker, currentPrice, percent }) {
     )
 }
 
-
-
-function Favorite() {
+export default function Favorite() {
     // useState
     const [selectedInfo, setSelectedInfo] = useState({
         id: '',
         name: ''
     })
 
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+    const [showMenu, setShowMenu] = useState(false)
+
+    const handleMenuClick = (e) => {
+        // 버튼의 위치를 기준으로 메뉴 위치 설정
+        const rect = e.currentTarget.getBoundingClientRect()
+        setMousePosition({
+            x: rect.left,
+            y: rect.bottom + 5 // 버튼 아래에 나타나도록
+        })
+        setShowMenu(true)
+    }
 
     // click event
     const favoriteItemClickHandler = (selectedData) => {
@@ -59,7 +105,7 @@ function Favorite() {
         })
     }
 
-    const testList = [<StockListItem ticker="NVDA" currentPrice="100.00" percent="+10.02" />]
+    const testList = [<StockListItem key="1" ticker="NVDA" currentPrice="100.00" percent="+10.02" />]
 
     return (
         <div className="favorite-container">
@@ -70,7 +116,7 @@ function Favorite() {
                         <button>
                             <IoAddSharp />
                         </button>
-                        <button className="icon-btn">
+                        <button className="icon-btn" onClick={handleMenuClick}>
                             <IoSettingsSharp />
                         </button>
                     </div>
@@ -102,10 +148,25 @@ function Favorite() {
                     )}
                 </div>
             </div>
+
+            {showMenu && (
+                <ContextMenu
+                    position={mousePosition}
+                    onClose={() => setShowMenu(false)}
+                    onEdit={() => {
+                        console.log('이름 바꾸기')
+                        setShowMenu(false)
+                    }}
+                    onDelete={() => {
+                        console.log('삭제')
+                        setShowMenu(false)
+                    }}
+                    onCopyLink={() => {
+                        console.log('링크 복사')
+                        setShowMenu(false)
+                    }}
+                />
+            )}
         </div>
     )
 }
-
-
-
-export default Favorite
