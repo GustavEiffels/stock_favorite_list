@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+ 
+ stock-postgre:
+  image: postgres:16-alpine
+  environment:
+   POSTGRES_USER: bookmark_admin
+   POSTGRES_PASSWORD: sss1234 
+   POSTGRES_DB: stockproject
+  ports:
+   - "53332:5432"
+  volumes:
+   - pgdata:/var/lib/postgresql/data
+  restart: always
+
+volumes:
+ pgdata:

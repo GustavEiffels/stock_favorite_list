@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: stock
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:53332/stockproject
+    username: bookmark_admin
+    password: sss1234
+  jpa:
+    open-in-view: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        timezone.default_storage: NORMALIZE_UTC
+        jdbc.time_zone: UTC
