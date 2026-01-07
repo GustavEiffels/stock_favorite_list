@@ -4,7 +4,7 @@ import com.bookmark.stock.domain.member.MemberDomainDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-import static com.bookmark.stock.common.constants.RegexConstants.*;
+import static com.bookmark.stock.common.constants.MessageConstants.*;
 
 
 public record MemberApiDto() {

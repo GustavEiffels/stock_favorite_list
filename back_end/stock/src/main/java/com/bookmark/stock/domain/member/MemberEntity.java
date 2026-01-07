@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.regex.Pattern;
 
-import static com.bookmark.stock.common.constants.RegexConstants.EMAIL_PATTERN;
-import static com.bookmark.stock.common.constants.RegexConstants.PASSWORD_PATTERN;
+import static com.bookmark.stock.common.constants.MessageConstants.EMAIL_PATTERN;
+import static com.bookmark.stock.common.constants.MessageConstants.PASSWORD_PATTERN;
 
 @Getter
 @RequiredArgsConstructor

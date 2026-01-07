@@ -15,6 +15,8 @@ public class MemberService {
     private final MemberRepository repository;
     private final PasswordEncoder passwordEncoder;
 
+
+    // CREATE
     @Transactional
     public void createMember(MemberDomainDto.CreateMember createMember){
         // 유효성 검증
@@ -29,5 +31,11 @@ public class MemberService {
             throw new BaseException(MemberException.InvalidApiKey);
         }
         repository.save(createMember.toDomain(passwordEncoder.encode(createMember.password())));
+    }
+
+    public void existMember(Long memberId){
+        if(repository.findMember(memberId).isEmpty()){
+            throw new BaseException(MemberException.NotFoundMemberException);
+        }
     }
 }

@@ -1,4 +1,8 @@
 package com.bookmark.stock.domain.bookmark;
 
-public class BookMarkRepository {
+import com.bookmark.stock.domain.bookmark.entity.BookMarkEntity;
+
+public interface BookMarkRepository {
+
+    BookMarkEntity bookMarkSave(BookMarkEntity bookMarkEntity);
 }

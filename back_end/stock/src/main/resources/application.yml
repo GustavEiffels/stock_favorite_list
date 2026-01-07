@@ -15,3 +15,9 @@ spring:
       hibernate:
         timezone.default_storage: NORMALIZE_UTC
         jdbc.time_zone: UTC
+
+
+polygon:
+  api:
+    key: s8aPL0bOZgDT0EPVTdBeKy_mIEvE9ue6
+    url: https://api.polygon.io

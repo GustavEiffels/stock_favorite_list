@@ -21,6 +21,12 @@ public class MemberRepositoryImpl implements MemberRepository {
     public Optional<MemberEntity> findMember(String email) {
         return jpaRepository.findByEmail(email);
     }
+
+    @Override
+    public Optional<MemberEntity> findMember(Long memberId) {
+        return jpaRepository.findByMemberId(memberId);
+    }
+
     @Override
     public Optional<MemberEntity> findMemberWithApiKey(String apiKey) {
         return jpaRepository.findByApiKey(apiKey);

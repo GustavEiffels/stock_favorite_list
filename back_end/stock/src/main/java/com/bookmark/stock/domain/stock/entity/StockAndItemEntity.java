@@ -1,5 +1,7 @@
-package com.bookmark.stock.domain.stock;
+package com.bookmark.stock.domain.stock.entity;
 
+
+import com.bookmark.stock.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +11,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Stock")
-public class StockEntity {
+@Table(name = "StockAndItem")
+public class StockAndItemEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String ticker;
+    private Long stockId;
+    private Long bookMarkItemId;
+
+
 }

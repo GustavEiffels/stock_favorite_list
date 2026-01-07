@@ -9,4 +9,6 @@ public interface MemberJpaRepositoryCustom {
     Optional<MemberEntity> findByEmail(String email);
 
     Optional<MemberEntity> findByApiKey(String apiKey);
+
+    Optional<MemberEntity> findByMemberId(Long memberId);
 }

@@ -8,5 +8,7 @@ public interface MemberRepository {
 
     Optional<MemberEntity> findMember(String email);
 
+    Optional<MemberEntity> findMember(Long memberId);
+
     Optional<MemberEntity> findMemberWithApiKey(String apiKey);
 }

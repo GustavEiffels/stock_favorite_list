@@ -40,6 +40,16 @@ public class MemberJpaRepositoryCustomImpl implements MemberJpaRepositoryCustom 
         );
     }
 
+    @Override
+    public Optional<MemberEntity> findByMemberId(Long memberId) {
+        return Optional.ofNullable(
+                queryFactory.selectFrom(memberEntity)
+                        .where(memberEntity.id.eq(memberId)
+                                .and(memberEntity.delete.isFalse())
+                        ).fetchOne()
+        );
+    }
+
     BooleanExpression apiKeyEq(String apiKey){
         return apiKey != null ? memberEntity.apiKey.eq(apiKey):null;
     }

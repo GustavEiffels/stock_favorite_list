@@ -1,17 +1,17 @@
 package com.bookmark.stock.domain.member;
 
-import com.bookmark.stock.common.constants.RegexConstants;
+import com.bookmark.stock.common.constants.MessageConstants;
 
 public interface MemberEnum {
 
     enum Regex{
         EMAIL_REGEX(
-                RegexConstants.EMAIL_PATTERN,
-                RegexConstants.EMAIL_MESSAGE
+                MessageConstants.EMAIL_PATTERN,
+                MessageConstants.EMAIL_MESSAGE
         ),
         PASSWORD_REGEX(
-                RegexConstants.PASSWORD_PATTERN,
-                RegexConstants.PASSWORD_MESSAGE
+                MessageConstants.PASSWORD_PATTERN,
+                MessageConstants.PASSWORD_MESSAGE
         )
         ;
         Regex(String regexRule, String regexMessage){
