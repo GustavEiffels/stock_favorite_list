@@ -2,6 +2,7 @@ package com.bookmark.stock.common.configs;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.handler.timeout.WriteTimeoutHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -23,20 +24,21 @@ import java.util.concurrent.TimeUnit;
 public class WebClientConfig {
 
     @Bean
-    public WebClient polygonWebClient(@Value("${polygon.api.url}") String baseUrl)
-    {
+    public WebClient finnhubWebClient(@Value("${finnhub.api.url}") String baseUrl){
         HttpClient httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,10000)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
                 .responseTimeout(Duration.ofSeconds(30))
-                .doOnConnected(conn->{
+                .doOnConnected(conn -> {
                     conn.addHandlerLast(new ReadTimeoutHandler(30, TimeUnit.SECONDS))
-                            .addHandlerLast(new ReadTimeoutHandler(30, TimeUnit.SECONDS));
+                            .addHandlerLast(new WriteTimeoutHandler(30, TimeUnit.SECONDS));
                 });
+
         return WebClient.builder()
                 .baseUrl(baseUrl)
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(HttpHeaders.USER_AGENT, "Stock-Service/1.0")
                 .filter(logRequest())
                 .filter(logResponse())
                 .filter(handleError())

@@ -1,6 +1,8 @@
-package com.bookmark.stock.domain.stock;
+package com.bookmark.stock.domain.stock.dto;
 
 import com.bookmark.stock.common.exceptions.BaseException;
+import com.bookmark.stock.domain.stock.StockEnum;
+import com.bookmark.stock.domain.stock.StockException;
 import com.bookmark.stock.domain.stock.entity.StockEntity;
 
 public record StockDomainDto() {
@@ -23,12 +25,13 @@ public record StockDomainDto() {
     public record StockCreateDto(
             String ticker,
             String stockName,
-            String stockNameKr
+            String stockNameKr,
+            StockEnum.Type type
     ){
 
         public StockEntity toDomain(){
             return stockNameKr==null ?
-                    StockEntity.create(ticker,stockName):StockEntity.create(ticker,stockName,stockNameKr);
+                    StockEntity.create(ticker,stockName,type):StockEntity.create(ticker,stockName,stockNameKr,type);
         }
     }
 }

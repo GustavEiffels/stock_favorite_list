@@ -1,11 +1,12 @@
 package com.bookmark.stock.infrastructure.stock.persistence;
 
-import com.bookmark.stock.domain.stock.StockDomainDto;
+import com.bookmark.stock.domain.stock.dto.StockDomainDto;
 import com.bookmark.stock.domain.stock.StockRepository;
 import com.bookmark.stock.domain.stock.entity.StockEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,6 +18,11 @@ public class StockRepositoryImpl implements StockRepository {
     @Override
     public StockEntity save(StockEntity stockEntity) {
         return jpaRepository.save(stockEntity);
+    }
+
+    @Override
+    public List<StockEntity> saveAll(List<StockEntity> stockEntityList) {
+        return jpaRepository.saveAll(stockEntityList);
     }
 
     @Override

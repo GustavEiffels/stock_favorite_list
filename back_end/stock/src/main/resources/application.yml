@@ -21,3 +21,9 @@ polygon:
   api:
     key: s8aPL0bOZgDT0EPVTdBeKy_mIEvE9ue6
     url: https://api.polygon.io
+
+
+finnhub:
+  api:
+    url: https://finnhub.io/api/v1
+    key: d59v4ohr01qu56mv5710d59v4ohr01qu56mv571g
