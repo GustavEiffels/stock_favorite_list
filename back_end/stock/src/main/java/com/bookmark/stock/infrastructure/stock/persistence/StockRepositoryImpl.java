@@ -4,6 +4,7 @@ import com.bookmark.stock.domain.stock.dto.StockDomainDto;
 import com.bookmark.stock.domain.stock.StockRepository;
 import com.bookmark.stock.domain.stock.entity.StockEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class StockRepositoryImpl implements StockRepository {
 
     private final StockJpaJpaRepository jpaRepository;
@@ -27,7 +29,8 @@ public class StockRepositoryImpl implements StockRepository {
 
     @Override
     public Optional<StockEntity> findStock(StockDomainDto.StockSearchDto stockSearchDto) {
-        return Optional.empty();
+        log.info("stockSearchDto : {}",stockSearchDto);
+        return jpaRepository.findStock(stockSearchDto);
     }
 
 

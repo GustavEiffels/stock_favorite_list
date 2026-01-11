@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/test")
 @RequiredArgsConstructor
@@ -26,11 +28,11 @@ public class StockTestController {
         return finnhubClient.getSearchBySymbol(ticker);
     }
 
-    @GetMapping("/insert/data/{ticker}")
-    public String saveStock(@PathVariable String ticker){
-        stockService.findByTickerStock(new StockDomainDto.StockSearchDto(
-                null,ticker,null,null
+    @GetMapping("/search/data/{ticker}")
+    public List<StockDomainDto.StockSearchDto> saveStock(@PathVariable String ticker){
+        log.info("ticker : {}",ticker);
+        return stockService.findStockByTicker(new StockDomainDto.StockSearchDto(
+                null,ticker.toUpperCase(),null,null
         ));
-        return "OK";
     }
 }

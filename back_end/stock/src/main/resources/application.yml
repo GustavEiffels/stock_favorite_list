@@ -10,7 +10,7 @@ spring:
     open-in-view: true
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         timezone.default_storage: NORMALIZE_UTC

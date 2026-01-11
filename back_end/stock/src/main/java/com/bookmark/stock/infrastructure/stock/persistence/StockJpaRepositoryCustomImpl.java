@@ -43,5 +43,4 @@ public class StockJpaRepositoryCustomImpl implements StockJpaRepositoryCustom {
     BooleanExpression stockNameKrEq(String stockNameKr){
         return stockNameKr != null ? stockEntity.stockNameKr.eq(stockNameKr) : null;
     }
-
 }

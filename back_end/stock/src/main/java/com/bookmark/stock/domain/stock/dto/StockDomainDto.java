@@ -19,6 +19,12 @@ public record StockDomainDto() {
                 throw new BaseException(StockException.SearchAllAttributeNullException);
             }
         }
+
+
+
+        public static StockSearchDto fromDomain(StockEntity stockEntity){
+            return new StockSearchDto(stockEntity.getId(),stockEntity.getTicker(), stockEntity.getStockName(), stockEntity.getStockNameKr());
+        }
     }
 
     //
@@ -28,10 +34,10 @@ public record StockDomainDto() {
             String stockNameKr,
             StockEnum.Type type
     ){
-
         public StockEntity toDomain(){
             return stockNameKr==null ?
                     StockEntity.create(ticker,stockName,type):StockEntity.create(ticker,stockName,stockNameKr,type);
         }
     }
+
 }
