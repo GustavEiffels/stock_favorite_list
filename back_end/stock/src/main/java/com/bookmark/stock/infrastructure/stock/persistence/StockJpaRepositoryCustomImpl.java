@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.bookmark.stock.domain.stock.entity.QStockEntity.*;
@@ -29,6 +30,15 @@ public class StockJpaRepositoryCustomImpl implements StockJpaRepositoryCustom {
                                 stockNameKrEq(searchDto.stockNameKr())
                         ).fetchOne()
         );
+    }
+
+    @Override
+    public List<StockEntity> find100Stock() {
+        return queryFactory.selectFrom(stockEntity)
+                        .where(stockEntity.delete.isFalse())
+                        .orderBy(stockEntity.stockName.desc())
+                        .limit(100)
+                        .fetch();
     }
 
     BooleanExpression stockIdEq(Long stockId){

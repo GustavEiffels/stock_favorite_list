@@ -11,7 +11,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Stock")
+@Table(
+        name = "Stock",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_stock_ticker",
+                        columnNames = {"ticker"}
+                )
+        }
+)
 public class StockEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

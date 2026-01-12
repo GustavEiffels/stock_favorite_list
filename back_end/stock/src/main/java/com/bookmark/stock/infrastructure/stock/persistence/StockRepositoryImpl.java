@@ -33,5 +33,10 @@ public class StockRepositoryImpl implements StockRepository {
         return jpaRepository.findStock(stockSearchDto);
     }
 
+    @Override
+    public List<StockEntity> find100Stock() {
+        return jpaRepository.find100Stock();
+    }
+
 
 }

@@ -1,7 +1,5 @@
 package com.bookmark.stock.domain.stock;
 
-import com.bookmark.stock.infrastructure.stock.external.StockExternalApiDto;
-import com.bookmark.stock.infrastructure.stock.cache.StockCacheDto;
 import com.bookmark.stock.domain.stock.entity.StockEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
