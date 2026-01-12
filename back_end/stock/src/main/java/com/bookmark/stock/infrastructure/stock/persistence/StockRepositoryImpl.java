@@ -1,6 +1,6 @@
 package com.bookmark.stock.infrastructure.stock.persistence;
 
-import com.bookmark.stock.domain.stock.dto.StockDomainDto;
+import com.bookmark.stock.domain.stock.StockDomainDto;
 import com.bookmark.stock.domain.stock.StockRepository;
 import com.bookmark.stock.domain.stock.entity.StockEntity;
 import lombok.RequiredArgsConstructor;

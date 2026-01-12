@@ -1,7 +1,7 @@
 package com.bookmark.stock.infrastructure.stock.cache;
 
 import com.bookmark.stock.domain.stock.StockCacheRepository;
-import com.bookmark.stock.domain.stock.dto.StockCacheDto;
+import com.bookmark.stock.domain.stock.entity.StockEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
@@ -21,13 +21,14 @@ public class StockCacheRepositoryImpl implements StockCacheRepository {
     private static final String CACHE_BY_NAME = "stockInfoByName";
 
     @Override
-    public Optional<StockCacheDto.StockInfoCache> findByTicker(String ticker) {
+    public Optional<StockEntity> findByTicker(String ticker) {
         Cache cache = cacheManager.getCache(CACHE_BY_TICKER);
         if (cache != null) {
             Cache.ValueWrapper wrapper = cache.get(ticker);
             if (wrapper != null) {
                 log.debug("Cache hit - ticker: {}", ticker);
-                return Optional.of((StockCacheDto.StockInfoCache) wrapper.get());
+                StockCacheDto.StockInfoCache stockInfoCache = ((StockCacheDto.StockInfoCache) wrapper.get());
+                return Optional.of(stockInfoCache.toDomain());
             }
         }
         log.debug("Cache miss - ticker: {}", ticker);
@@ -35,8 +36,8 @@ public class StockCacheRepositoryImpl implements StockCacheRepository {
     }
 
     @Override
-    public void save(StockCacheDto.StockInfoCache stockInfoCache) {
-        log.info("{} : cache 에 단일 저장",stockInfoCache);
+    public void save(StockEntity stockEntity) {
+        StockCacheDto.StockInfoCache stockInfoCache = StockCacheDto.StockInfoCache.fromDomain(stockEntity);
         Cache tickerCache = cacheManager.getCache(CACHE_BY_TICKER);
         Cache nameCache = cacheManager.getCache(CACHE_BY_NAME);
         tickerCache.put(stockInfoCache.ticker(), stockInfoCache);
@@ -44,14 +45,13 @@ public class StockCacheRepositoryImpl implements StockCacheRepository {
     }
 
     @Override
-    public void saveAll(List<StockCacheDto.StockInfoCache> stockInfoCacheList) {
-        log.info("{} : cache 에 리스트 저장",stockInfoCacheList);
+    public void saveAll(List<StockEntity> stockList) {
         Cache tickerCache = cacheManager.getCache(CACHE_BY_TICKER);
         Cache nameCache = cacheManager.getCache(CACHE_BY_NAME);
-
-            stockInfoCacheList.forEach(stockInfo -> {
-                tickerCache.put(stockInfo.ticker(), stockInfo);
-                nameCache.put(stockInfo.stockName(), stockInfo);
+        stockList.forEach(stock -> {
+                StockCacheDto.StockInfoCache stockInfoCache = StockCacheDto.StockInfoCache.fromDomain(stock);
+                tickerCache.put(stockInfoCache.ticker(), stockInfoCache);
+                nameCache.put(stockInfoCache.stockName(), stockInfoCache);
             });
     }
 

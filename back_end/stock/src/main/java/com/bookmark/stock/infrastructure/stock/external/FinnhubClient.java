@@ -1,6 +1,5 @@
 package com.bookmark.stock.infrastructure.stock.external;
 
-import com.bookmark.stock.domain.stock.dto.StockApiDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,32 +19,11 @@ public class FinnhubClient {
         this.apiKey = apiKey;
     }
 
-    public StockApiDto.PinnhubProfileResponse getStockProfile(String ticker){
-        log.info("ticker : {}",ticker);
-        try {
-            StockApiDto.PinnhubProfileResponse response = webClient
-                    .get()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/stock/profile2")
-                            .queryParam("symbol",ticker.toUpperCase())
-                            .queryParam("token",apiKey)
-                            .build())
-                    .retrieve()
-                    .bodyToMono(StockApiDto.PinnhubProfileResponse.class)
-                    .block();
-            log.info("call out STOCK success : {}",response);
-            return response;
-        }
-        catch (Exception e){
-            log.error(e.getLocalizedMessage());
-            return null;
-        }
-    }
 
-    public StockApiDto.PinnhubSymbolResponse getSearchBySymbol(String symbol){
+    public StockExternalApiDto.PinnhubSymbolResponse getSearchBySymbol(String symbol){
         log.info("symbol : {}",symbol);
         try {
-            StockApiDto.PinnhubSymbolResponse response = webClient
+            StockExternalApiDto.PinnhubSymbolResponse response = webClient
                     .get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/search")
@@ -53,7 +31,7 @@ public class FinnhubClient {
                             .queryParam("token",apiKey)
                             .build())
                     .retrieve()
-                    .bodyToMono(StockApiDto.PinnhubSymbolResponse.class)
+                    .bodyToMono(StockExternalApiDto.PinnhubSymbolResponse.class)
                     .block();
             log.info("call out symbol success : {}",response);
             return response;

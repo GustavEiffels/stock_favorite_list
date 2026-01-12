@@ -1,9 +1,9 @@
 package com.bookmark.stock.interfaces.test;
 
 import com.bookmark.stock.domain.stock.StockService;
-import com.bookmark.stock.domain.stock.dto.StockDomainDto;
+import com.bookmark.stock.domain.stock.StockDomainDto;
 import com.bookmark.stock.infrastructure.stock.external.FinnhubClient;
-import com.bookmark.stock.domain.stock.dto.StockApiDto;
+import com.bookmark.stock.infrastructure.stock.external.StockExternalApiDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class StockTestController {
     private final StockService stockService;
 
     @GetMapping("/finnhub/{ticker}")
-    public StockApiDto.PinnhubSymbolResponse testPolygonApi(
+    public StockExternalApiDto.PinnhubSymbolResponse testPolygonApi(
             @PathVariable String ticker
     ){
         return finnhubClient.getSearchBySymbol(ticker);

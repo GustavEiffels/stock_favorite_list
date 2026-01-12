@@ -1,4 +1,4 @@
-package com.bookmark.stock.domain.stock.dto;
+package com.bookmark.stock.domain.stock;
 
 import com.bookmark.stock.common.exceptions.BaseException;
 import com.bookmark.stock.domain.stock.StockEnum;
@@ -19,8 +19,6 @@ public record StockDomainDto() {
                 throw new BaseException(StockException.SearchAllAttributeNullException);
             }
         }
-
-
 
         public static StockSearchDto fromDomain(StockEntity stockEntity){
             return new StockSearchDto(stockEntity.getId(),stockEntity.getTicker(), stockEntity.getStockName(), stockEntity.getStockNameKr());

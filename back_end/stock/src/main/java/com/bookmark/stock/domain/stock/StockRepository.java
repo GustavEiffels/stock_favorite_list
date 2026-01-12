@@ -1,6 +1,5 @@
 package com.bookmark.stock.domain.stock;
 
-import com.bookmark.stock.domain.stock.dto.StockDomainDto;
 import com.bookmark.stock.domain.stock.entity.StockEntity;
 
 import java.util.List;

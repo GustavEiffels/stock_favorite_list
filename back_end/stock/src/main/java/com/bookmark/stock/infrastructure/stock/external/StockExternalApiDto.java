@@ -1,22 +1,11 @@
-package com.bookmark.stock.domain.stock.dto;
+package com.bookmark.stock.infrastructure.stock.external;
 
 import com.bookmark.stock.domain.stock.StockEnum;
 import com.bookmark.stock.domain.stock.entity.StockEntity;
 
 import java.util.List;
 
-public record StockApiDto() {
-
-    public record PinnhubProfileResponse(
-            String ticker,
-            String name,
-            String country,
-            String currency,
-            String exchange,
-            String logo,
-            Double marketCapitalization,
-            String finnhubIndustry
-    ){}
+public record StockExternalApiDto() {
 
     public record PinnhubSymbolResponse(
             Integer count,
@@ -33,9 +22,9 @@ public record StockApiDto() {
             return StockEntity.create(
                     symbol,
                     description,
-                    type.equals(StockEnum.Type.ETF.name())?
-                            StockEnum.Type.ETF:
-                            StockEnum.Type.STOCK
+                    type.equals(StockEnum.Type.STOCK.name())?
+                            StockEnum.Type.STOCK:
+                            StockEnum.Type.ETF
             );
         }
     }
