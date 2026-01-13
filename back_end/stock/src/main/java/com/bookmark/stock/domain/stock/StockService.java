@@ -17,11 +17,12 @@ public class StockService {
     private final StockExternalApiClient externalRepository;
     private final StockCacheRepository cacheRepository;
 
+    // INSERT
     public StockEntity createStock(StockDomainDto.StockCreateDto createDto){
         return repository.save(createDto.toDomain());
     }
 
-
+    // Business
     @Transactional
     public List<StockDomainDto.StockSearchDto> findStockByTicker(StockDomainDto.StockSearchDto searchDto){
         // ticker 로 조회
@@ -61,5 +62,8 @@ public class StockService {
         cacheRepository.saveAll(stockInfoListFromExternal);
         return stockInfoListFromExternal.stream().map(StockDomainDto.StockSearchDto::fromDomain).toList();
     }
+
+
+
 
 }

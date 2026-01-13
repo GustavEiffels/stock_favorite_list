@@ -15,6 +15,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class StockCacheRepositoryImpl implements StockCacheRepository {
+
     private final CacheManager cacheManager;
 
     private static final String CACHE_BY_TICKER = "stockInfoByTicker";
@@ -53,6 +54,10 @@ public class StockCacheRepositoryImpl implements StockCacheRepository {
                 tickerCache.put(stockInfoCache.ticker(), stockInfoCache);
                 nameCache.put(stockInfoCache.stockName(), stockInfoCache);
             });
+    }
+    @Override
+    public Optional<StockEntity> findByStockId(Long stockId) {
+        return Optional.empty();
     }
 
 

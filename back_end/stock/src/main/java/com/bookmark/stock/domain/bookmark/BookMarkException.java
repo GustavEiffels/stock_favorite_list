@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 public enum BookMarkException implements ExceptionInterface {
     MemberIdNullException("MemberIdNullException", MessageConstants.BOOKMARK_TITLE_NULL_MESSAGE),
     TitleRegexException("TitleRegexException", MessageConstants.BOOKMARK_TITLE_MESSAGE),
-    TitleNullException("TitleNullException", MessageConstants.BOOKMARK_TITLE_NULL_MESSAGE)
+    TitleNullException("TitleNullException", MessageConstants.BOOKMARK_TITLE_NULL_MESSAGE),
+    AlreadyExistStockInThisBookMark("AlreadyExistStockInThisBookMark",MessageConstants.BMWSTOCK_STOCK_ALREADY_EXIST_IN_BOOKMARK),
+    NotFoundBookMarkException("NotFoundBookMarkException",MessageConstants.BOOKMARK_NOT_FOUND);
     ;
 
     private final String code;

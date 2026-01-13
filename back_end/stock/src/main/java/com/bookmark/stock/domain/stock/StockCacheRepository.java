@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface StockCacheRepository {
     Optional<StockEntity> findByTicker(String ticker);
 
+    Optional<StockEntity> findByStockId(Long stockId);
+
     void save(StockEntity stock);
 
     void saveAll(List<StockEntity> stockList);

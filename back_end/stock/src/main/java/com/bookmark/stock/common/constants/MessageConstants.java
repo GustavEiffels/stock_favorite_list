@@ -18,6 +18,8 @@ public interface MessageConstants {
     String BOOKMARK_TITLE_PATTERN = "^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\s_-]{2,50}$";
     String BOOKMARK_TITLE_MESSAGE = "즐겨찾기 이름은 2~50자 여야 합니다.";
     String BOOKMARK_TITLE_NULL_MESSAGE = "즐겨찾기 목록의 이름은 반드시 설정되어야 합니다.";
+    String BOOKMARK_NOT_FOUND = "즐겨찾기 목록을 찾지 못했습니다.";
+    String BMWSTOCK_STOCK_ALREADY_EXIST_IN_BOOKMARK = "bookmark 에 이미 존재하는 주식 입니다.";
 
 
     //

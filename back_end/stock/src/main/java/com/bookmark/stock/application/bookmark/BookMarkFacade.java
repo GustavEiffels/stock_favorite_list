@@ -22,4 +22,12 @@ public class BookMarkFacade {
         // BookMark 생성
         bookMarkService.createBookMark(criteria.toDomain());
     }
+
+    public void addStockAtBookMark(BookMarkFacadeDto.AddStockAtBookMarkCriteria criteria){
+        // 1. bookMark 조회  하기 : 실제로 존재 하는지?
+        bookMarkService.findBookMark(criteria.bookMarkId());
+
+        // 2. bookMarkId 와 stockId 가 있는 stockWithItem 객체가 존재하는 지 확인 -> stockWithItem 객체 추가
+        bookMarkService.createBookMarkWithStock(criteria.toDomainForCreateBmWStock());
+    }
 }
