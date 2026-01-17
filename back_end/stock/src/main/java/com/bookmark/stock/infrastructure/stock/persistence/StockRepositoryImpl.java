@@ -29,7 +29,6 @@ public class StockRepositoryImpl implements StockRepository {
 
     @Override
     public Optional<StockEntity> findStock(StockDomainDto.StockSearchDto stockSearchDto) {
-        log.info("stockSearchDto : {}",stockSearchDto);
         return jpaRepository.findStock(stockSearchDto);
     }
 

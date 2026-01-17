@@ -7,17 +7,27 @@ import com.bookmark.stock.domain.stock.entity.StockEntity;
 public record StockCacheDto() {
 
     public record StockInfoCache(
+            Long stockId,
             String ticker,
             String stockName,
-            Long stockId,
-            StockEnum.Type type
+            String currency
     ){
 
         public static StockInfoCache fromDomain(StockEntity stock){
-            return new StockInfoCache(stock.getTicker(),stock.getStockName(),stock.getId(),stock.getType());
+            return new StockInfoCache(
+                    stock.getId(),
+                    stock.getTicker(),
+                    stock.getStockName(),
+                    stock.getCurrency()
+            );
         }
         public StockEntity toDomain(){
-            return new StockEntity(stockId,ticker,stockName,null,type);
+            return StockEntity.builder()
+                    .id(stockId)
+                    .ticker(ticker)
+                    .stockName(stockName)
+                    .currency(currency)
+                    .build();
         }
     }
 }

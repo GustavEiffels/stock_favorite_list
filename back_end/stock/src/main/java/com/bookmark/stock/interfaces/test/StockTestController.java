@@ -4,6 +4,7 @@ import com.bookmark.stock.domain.stock.StockService;
 import com.bookmark.stock.domain.stock.StockDomainDto;
 import com.bookmark.stock.infrastructure.stock.external.FinnhubClient;
 import com.bookmark.stock.infrastructure.stock.external.StockExternalApiDto;
+import com.bookmark.stock.infrastructure.stock.external.YahooFinanceClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,8 @@ public class StockTestController {
     private final FinnhubClient finnhubClient;
     private final StockService stockService;
 
+    private final YahooFinanceClient yahooFinanceClient;
+
     @GetMapping("/finnhub/{ticker}")
     public StockExternalApiDto.PinnhubSymbolResponse testPolygonApi(
             @PathVariable String ticker
@@ -32,7 +35,17 @@ public class StockTestController {
     public List<StockDomainDto.StockSearchDto> saveStock(@PathVariable String ticker){
         log.info("ticker : {}",ticker);
         return stockService.findStockByTicker(new StockDomainDto.StockSearchDto(
-                null,ticker.toUpperCase(),null,null
-        ));
+                null,ticker.toUpperCase(),null));
+    }
+
+    @GetMapping("/all/in_cache")
+    public List<StockDomainDto.StockSearchDto> findAllInCache(){
+        List<StockDomainDto.StockSearchDto> all = stockService.findStockInCache();
+        log.info("all caches : {}", all);
+        return all;
+    }
+    @GetMapping("/yahoo/{symbol}")
+    public StockExternalApiDto.YahooFinanceResponse yahooTest(@PathVariable String symbol){
+        return yahooFinanceClient.getStockQuote(symbol);
     }
 }

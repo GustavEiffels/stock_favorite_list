@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface StockCacheRepository {
     Optional<StockEntity> findByTicker(String ticker);
 
-    Optional<StockEntity> findByStockId(Long stockId);
+    List<StockEntity> findAllInCache();
 
     void save(StockEntity stock);
 

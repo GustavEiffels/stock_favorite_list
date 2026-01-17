@@ -4,6 +4,7 @@ import com.bookmark.stock.common.entity.BaseEntity;
 import com.bookmark.stock.domain.stock.StockEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -20,28 +21,12 @@ import lombok.RequiredArgsConstructor;
                 )
         }
 )
+@Builder
 public class StockEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String ticker;
     private String stockName; // USA
-    private String stockNameKr;
-
-    @Enumerated(EnumType.STRING)
-    private StockEnum.Type type;
-
-    public static StockEntity create(String ticker,String stockName, StockEnum.Type type){
-        return create(ticker,stockName,null,type);
-    }
-
-    public static StockEntity create(String ticker,String stockName,String stockNameKr,StockEnum.Type type){
-        return new StockEntity(
-                null,
-                ticker,
-                stockName,
-                stockNameKr,
-                type
-        );
-    }
+    private String currency;
 }

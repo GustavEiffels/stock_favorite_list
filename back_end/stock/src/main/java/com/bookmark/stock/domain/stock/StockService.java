@@ -18,16 +18,14 @@ public class StockService {
     private final StockCacheRepository cacheRepository;
 
     // INSERT
-    public StockEntity createStock(StockDomainDto.StockCreateDto createDto){
-        return repository.save(createDto.toDomain());
-    }
+
 
     // Business
     @Transactional
     public List<StockDomainDto.StockSearchDto> findStockByTicker(StockDomainDto.StockSearchDto searchDto){
         // ticker 로 조회
         if(searchDto.ticker().isEmpty()){
-            throw new RuntimeException("TICKER 가 없습니다.");
+            throw new RuntimeException("TICKER 가 입력되지 않았습니다.");
         }
         String ticker = searchDto.ticker();
 
@@ -39,7 +37,7 @@ public class StockService {
             return List.of(StockDomainDto.StockSearchDto.fromDomain(stockInfoFromCache.get()));
         }
 
-        // 2. cache 에 존재하지 않아 DB 에 조회
+        // 2. DB 에 조회
         Optional<StockEntity> stockInfoFromRepo = repository.findStock(searchDto);
         // 존재하면 cache 에 저장하고 값 return
         if(stockInfoFromRepo.isPresent()){
@@ -49,7 +47,7 @@ public class StockService {
             return List.of(StockDomainDto.StockSearchDto.fromDomain(stock));
         }
 
-        // 3. DB 에도 존재하지 않아 API 호출
+        // 3. API 호출
         List<StockEntity> stockInfoListFromExternal = externalRepository.findSymbol(ticker);
         // API 에도 존재하지 않으면 사용자 에러로 간주
         if(stockInfoListFromExternal.isEmpty()){
@@ -63,7 +61,8 @@ public class StockService {
         return stockInfoListFromExternal.stream().map(StockDomainDto.StockSearchDto::fromDomain).toList();
     }
 
-
-
+    public List<StockDomainDto.StockSearchDto> findStockInCache(){
+        return cacheRepository.findAllInCache().stream().map(StockDomainDto.StockSearchDto::fromDomain).toList();
+    }
 
 }

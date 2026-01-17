@@ -20,16 +20,16 @@ public class StockJpaRepositoryCustomImpl implements StockJpaRepositoryCustom {
 
     @Override
     public Optional<StockEntity> findStock(StockDomainDto.StockSearchDto searchDto) {
-        return Optional.ofNullable(
-                queryFactory.selectFrom(stockEntity)
-                        .where(
-                                stockEntity.delete.isFalse(),
-                                stockIdEq(searchDto.stockId()),
-                                tickerEq(searchDto.ticker()),
-                                stockNameEq(searchDto.stockName()),
-                                stockNameKrEq(searchDto.stockNameKr())
-                        ).fetchOne()
-        );
+
+        StockEntity stock = queryFactory.selectFrom(stockEntity)
+                .where(
+                        stockEntity.delete.isFalse(),
+                        stockIdEq(searchDto.stockId()),
+                        tickerEq(searchDto.ticker()),
+                        stockNameEq(searchDto.stockName())
+                ).fetchOne();
+
+        return Optional.ofNullable(stock);
     }
 
     @Override
@@ -50,7 +50,5 @@ public class StockJpaRepositoryCustomImpl implements StockJpaRepositoryCustom {
     BooleanExpression stockNameEq(String stockName){
         return stockName != null ? stockEntity.stockName.eq(stockName) : null;
     }
-    BooleanExpression stockNameKrEq(String stockNameKr){
-        return stockNameKr != null ? stockEntity.stockNameKr.eq(stockNameKr) : null;
-    }
+
 }

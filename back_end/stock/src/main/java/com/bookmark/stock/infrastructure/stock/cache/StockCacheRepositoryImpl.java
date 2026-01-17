@@ -8,6 +8,7 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,27 @@ public class StockCacheRepositoryImpl implements StockCacheRepository {
     }
 
     @Override
+    public List<StockEntity> findAllInCache() {
+        Cache cache = cacheManager.getCache(CACHE_BY_TICKER);
+        if(cache == null){
+            return Collections.emptyList();
+        }
+
+        Object nativeCache = cache.getNativeCache();
+
+        if(nativeCache instanceof com.github.benmanes.caffeine.cache.Cache){
+            com.github.benmanes.caffeine.cache.Cache<Object,Object> caffeineCache =
+                    (com.github.benmanes.caffeine.cache.Cache<Object,Object>) nativeCache;
+
+            return caffeineCache.asMap().values().stream()
+                    .map(obj -> (StockCacheDto.StockInfoCache) obj)
+                    .map(StockCacheDto.StockInfoCache::toDomain)
+                    .toList();
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
     public void save(StockEntity stockEntity) {
         StockCacheDto.StockInfoCache stockInfoCache = StockCacheDto.StockInfoCache.fromDomain(stockEntity);
         Cache tickerCache = cacheManager.getCache(CACHE_BY_TICKER);
@@ -55,10 +77,7 @@ public class StockCacheRepositoryImpl implements StockCacheRepository {
                 nameCache.put(stockInfoCache.stockName(), stockInfoCache);
             });
     }
-    @Override
-    public Optional<StockEntity> findByStockId(Long stockId) {
-        return Optional.empty();
-    }
+
 
 
 }

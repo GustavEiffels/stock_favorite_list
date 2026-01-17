@@ -11,15 +11,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StockExternalApiClientImpl implements StockExternalApiClient {
 
-    private final FinnhubClient finnhubClient;
+    private final YahooFinanceClient yahooFinanceClient;
 
     @Override
     public List<StockEntity> findSymbol(String symbol) {
-        StockExternalApiDto.PinnhubSymbolResponse response = finnhubClient.getSearchBySymbol(symbol);
-
-        return  finnhubClient.getSearchBySymbol(symbol).result().stream()
-                .map(StockExternalApiDto.PinnhubSymbolProfile::toDomain)
+        return yahooFinanceClient.getStockQuote(symbol)
+                .chart().result().stream().map(StockExternalApiDto.YahooResult::meta)
+                .map(StockExternalApiDto.YahooMeta::toDomain)
                 .toList();
-
     }
 }

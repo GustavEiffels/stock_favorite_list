@@ -4,4 +4,8 @@ public interface StockEnum {
     enum Type{
         ETF,STOCK
     }
+
+    enum Currency{
+        USD,KRW
+    }
 }

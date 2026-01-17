@@ -4,6 +4,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +40,52 @@ public class WebClientConfig {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .defaultHeader(HttpHeaders.USER_AGENT, "Stock-Service/1.0")
+                .filter(logRequest())
+                .filter(logResponse())
+                .filter(handleError())
+                .build();
+    }
+
+
+    @Bean
+    public WebClient kisWebClient(@Value("${kis.api.base-url}") String baseUrl){
+        HttpClient httpClient = HttpClient.create()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
+                .responseTimeout(Duration.ofSeconds(30))
+                .doOnConnected(conn -> {
+                    conn.addHandlerLast(new ReadTimeoutHandler(30, TimeUnit.SECONDS))
+                            .addHandlerLast(new WriteTimeoutHandler(30, TimeUnit.SECONDS));
+                });
+
+        return WebClient.builder()
+                .baseUrl(baseUrl)
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE + "; charset=utf-8")
+                .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(HttpHeaders.USER_AGENT, "Stock-Service/1.0")
+                .filter(logRequest())
+                .filter(logResponse())
+                .filter(handleError())
+                .build();
+    }
+
+
+    @Bean
+    public WebClient yahooFinanceWebClient(@Value("${yahoo.finance.base-url}") String baseUrl){
+        HttpClient httpClient = HttpClient.create()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
+                .responseTimeout(Duration.ofSeconds(30))
+                .doOnConnected(conn -> {
+                    conn.addHandlerLast(new ReadTimeoutHandler(30, TimeUnit.SECONDS))
+                            .addHandlerLast(new WriteTimeoutHandler(30, TimeUnit.SECONDS));
+                });
+
+        return WebClient.builder()
+                .baseUrl(baseUrl)
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(HttpHeaders.USER_AGENT, "Mozilla/5.0")
                 .filter(logRequest())
                 .filter(logResponse())
                 .filter(handleError())

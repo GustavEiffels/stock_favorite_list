@@ -21,7 +21,7 @@ public class CacheConfig {
         simpleCacheManager.setCaches(Arrays.asList(
                 buildCache("stockInfoByTicker",10000,24,TimeUnit.DAYS),
                 buildCache("allStocks",10000,24,TimeUnit.DAYS),
-                buildCache("stockInfoByName",1,24,TimeUnit.DAYS)
+                buildCache("stockInfoByName",10000,24,TimeUnit.DAYS)
         ));
         return  simpleCacheManager;
     }

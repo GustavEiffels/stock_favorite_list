@@ -10,7 +10,7 @@ spring:
     open-in-view: true
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         timezone.default_storage: NORMALIZE_UTC
@@ -27,3 +27,16 @@ finnhub:
   api:
     url: https://finnhub.io/api/v1
     key: d59v4ohr01qu56mv5710d59v4ohr01qu56mv571g
+
+
+kis:
+  api:
+    base-url: https://openapi.koreainvestment.com:9443
+    tr-id:
+      us-stock-price: HHDFS00000300
+
+
+
+yahoo:
+  finance:
+    base-url: https://query1.finance.yahoo.com

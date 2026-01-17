@@ -11,31 +11,18 @@ public record StockDomainDto() {
     public record StockSearchDto(
             Long stockId,
             String ticker,
-            String stockName,
-            String stockNameKr
+            String stockName
     ){
         public StockSearchDto{
-            if(stockId == null && ticker == null && stockName == null && stockNameKr == null){
+            if(stockId == null && ticker == null && stockName == null){
                 throw new BaseException(StockException.SearchAllAttributeNullException);
             }
         }
 
         public static StockSearchDto fromDomain(StockEntity stockEntity){
-            return new StockSearchDto(stockEntity.getId(),stockEntity.getTicker(), stockEntity.getStockName(), stockEntity.getStockNameKr());
+            return new StockSearchDto(stockEntity.getId(),stockEntity.getTicker(), stockEntity.getStockName());
         }
     }
 
-    //
-    public record StockCreateDto(
-            String ticker,
-            String stockName,
-            String stockNameKr,
-            StockEnum.Type type
-    ){
-        public StockEntity toDomain(){
-            return stockNameKr==null ?
-                    StockEntity.create(ticker,stockName,type):StockEntity.create(ticker,stockName,stockNameKr,type);
-        }
-    }
 
 }
