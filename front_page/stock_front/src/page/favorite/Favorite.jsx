@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react"
 import { IoSettingsSharp, IoAddSharp } from 'react-icons/io5';
 import './Favorite.css'
+import StockSearchModal from "../../components/StockSearchModal";
 
 
 function ContextMenu({ position, onClose, onEdit, onDelete, onCopyLink }) {
@@ -86,18 +87,17 @@ export default function Favorite() {
 
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
     const [showMenu, setShowMenu] = useState(false)
+    const [showStockModal, setShowStockModal] = useState(false)
 
     const handleMenuClick = (e) => {
-        // 버튼의 위치를 기준으로 메뉴 위치 설정
         const rect = e.currentTarget.getBoundingClientRect()
         setMousePosition({
             x: rect.left,
-            y: rect.bottom + 5 // 버튼 아래에 나타나도록
+            y: rect.bottom + 5
         })
         setShowMenu(true)
     }
 
-    // click event
     const favoriteItemClickHandler = (selectedData) => {
         setSelectedInfo({
             id: '',
@@ -133,7 +133,7 @@ export default function Favorite() {
                         <h1>{selectedInfo.name}</h1>
                         <input type="text" placeholder="검색..." />
                     </div>
-                    <button>
+                    <button onClick={() => setShowStockModal(true)}>
                         + ADD
                     </button>
                 </div>
@@ -167,6 +167,8 @@ export default function Favorite() {
                     }}
                 />
             )}
+
+            <StockSearchModal isOpen={showStockModal} onClose={() => setShowStockModal(false)} />
         </div>
     )
 }
