@@ -2,15 +2,15 @@ import { useEffect, useRef, useState } from "react"
 import './StockSearchModal.css'
 import { IoSearchSharp } from 'react-icons/io5';
 
-export default function StockSearchModal({ isOpen, onClose }) {
+export default function StockSearchModal({ isOpen, onClose, selectStockHandler = () => { } }) {
     const [position, setPosition] = useState({ x: 0, y: 0 })
     const [isDragging, setIsDragging] = useState(false)
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
     const [searchQuery, setSearchQuery] = useState('')
     const [isValidInput, setIsValidInput] = useState(true)
     const [searchResults, setSearchResults] = useState([
-        // { ticker: 'SOXL', name: '속슬' }, { ticker: 'SOXS', name: '속스' }, { ticker: 'SOXX', name: '속슬X' }, { ticker: 'SOX1', name: '속스1' },
-        // { ticker: 'SOX2', name: '속슬' }, { ticker: 'SOX3', name: '속스' }, { ticker: 'SOX4', name: '속슬X' }, { ticker: 'SOX5', name: '속스1' }
+        { ticker: 'SOXL', name: '속슬' }, { ticker: 'SOXS', name: '속스' }, { ticker: 'SOXX', name: '속슬X' }, { ticker: 'SOX1', name: '속스1' },
+        { ticker: 'SOX2', name: '속슬' }, { ticker: 'SOX3', name: '속스' }, { ticker: 'SOX4', name: '속슬X' }, { ticker: 'SOX5', name: '속스1' }
     ])
     const modalRef = useRef(null)
 
@@ -46,6 +46,7 @@ export default function StockSearchModal({ isOpen, onClose }) {
 
     const handleStockSelect = (stock) => {
         console.log('선택된 주식:', stock)
+        selectStockHandler(stock)
         onClose()
     }
 
