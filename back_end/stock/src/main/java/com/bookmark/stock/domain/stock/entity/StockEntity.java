@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
         }
 )
 @Builder
-public class StockEntity extends BaseEntity {
+public class StockEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

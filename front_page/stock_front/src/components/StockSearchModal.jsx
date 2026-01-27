@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import './StockSearchModal.css'
 import { IoSearchSharp } from 'react-icons/io5';
+import { stockApi } from "../api/stockApi";
 
 export default function StockSearchModal({ isOpen, onClose, selectStockHandler = () => { } }) {
     const [position, setPosition] = useState({ x: 0, y: 0 })
@@ -8,11 +9,10 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
     const [searchQuery, setSearchQuery] = useState('')
     const [isValidInput, setIsValidInput] = useState(true)
-    const [searchResults, setSearchResults] = useState([
-        { ticker: 'SOXL', name: '속슬' }, { ticker: 'SOXS', name: '속스' }, { ticker: 'SOXX', name: '속슬X' }, { ticker: 'SOX1', name: '속스1' },
-        { ticker: 'SOX2', name: '속슬' }, { ticker: 'SOX3', name: '속스' }, { ticker: 'SOX4', name: '속슬X' }, { ticker: 'SOX5', name: '속스1' }
-    ])
+    const [searchResults, setSearchResults] = useState([])
+    const [apiCacheResults, setApiCacheResults] = useState([])
     const modalRef = useRef(null)
+
 
 
     const handleMouseDown = (e) => {
@@ -45,7 +45,6 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
     }
 
     const handleStockSelect = (stock) => {
-        console.log('선택된 주식:', stock)
         selectStockHandler(stock)
         onClose()
     }
@@ -55,10 +54,19 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
 
         if (query.length === 0) {
             setIsValidInput(true)
+            setSearchResults([])
             return
         }
-        const isValid = /^[a-zA-Z0-9]+$/.test(query)
-        setIsValidInput(isValid)
+
+        const isValid = /^[a-zA-Z0-9]+$/.test(query);
+        setIsValidInput(isValid);
+
+        const filteredResults = apiCacheResults.filter(stock =>
+            stock.ticker?.toLowerCase().includes(query.toLowerCase()) ||
+            stock.stockName?.toLowerCase().includes(query.toLowerCase())
+        );
+
+        setSearchResults(filteredResults)
     }
 
     const initUseState = () => {
@@ -67,6 +75,9 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
     }
 
     useEffect(() => {
+
+        initUseState()
+
         if (isOpen && modalRef.current) {
             const modalRect = modalRef.current.getBoundingClientRect()
             setPosition({
@@ -74,7 +85,6 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
                 y: (window.innerHeight - modalRect.height) / 2 - 150
             })
         }
-        initUseState()
 
     }, [isOpen])
 
@@ -88,6 +98,21 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
             }
         }
     }, [isDragging, dragStart, position])
+
+    useEffect(() => {
+        const fetchStockInfos = async () => {
+            try {
+                const tickerDataFromServer = await stockApi.getStockList();
+                setApiCacheResults(tickerDataFromServer.data)
+            }
+            catch (error) {
+                console.log('error : ', error)
+            }
+        }
+        if (isOpen) {
+            fetchStockInfos();
+        }
+    }, [isOpen]);
 
     if (!isOpen) return null;
 
@@ -133,7 +158,7 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
                                         >
                                             <div className="stock-info">
                                                 <span className="ticker">{stock.ticker}</span>
-                                                <span className="name">{stock.name}</span>
+                                                <span className="name">{stock.stockName}</span>
                                             </div>
                                         </li>
                                     ))}

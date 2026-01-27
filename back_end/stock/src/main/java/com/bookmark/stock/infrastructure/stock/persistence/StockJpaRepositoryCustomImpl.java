@@ -23,7 +23,6 @@ public class StockJpaRepositoryCustomImpl implements StockJpaRepositoryCustom {
 
         StockEntity stock = queryFactory.selectFrom(stockEntity)
                 .where(
-                        stockEntity.delete.isFalse(),
                         stockIdEq(searchDto.stockId()),
                         tickerEq(searchDto.ticker()),
                         stockNameEq(searchDto.stockName())
@@ -35,7 +34,6 @@ public class StockJpaRepositoryCustomImpl implements StockJpaRepositoryCustom {
     @Override
     public List<StockEntity> find100Stock() {
         return queryFactory.selectFrom(stockEntity)
-                        .where(stockEntity.delete.isFalse())
                         .orderBy(stockEntity.stockName.desc())
                         .limit(100)
                         .fetch();
