@@ -9,4 +9,10 @@ export const stockApi = {
     getStockDetail: async (stockId) => {
         return await apiClient.get(`/api/stocks/${stockId}`);
     },
+
+    getStockByTicker: async (ticker) => {
+        return await apiClient.get(`/api/v1/stocks/search/${ticker}`);
+    }
+
+
 };

@@ -5,6 +5,7 @@ import com.bookmark.stock.domain.stock.entity.StockEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -15,8 +16,14 @@ public class StockExternalApiClientImpl implements StockExternalApiClient {
 
     @Override
     public List<StockEntity> findSymbol(String symbol) {
-        return yahooFinanceClient.getStockQuote(symbol)
-                .chart().result().stream().map(StockExternalApiDto.YahooResult::meta)
+        StockExternalApiDto.YahooFinanceResponse response = yahooFinanceClient.getStockQuote(symbol);
+
+        if (response == null || response.chart() == null || response.chart().result() == null) {
+            return Collections.emptyList();
+        }
+
+        return response.chart().result().stream()
+                .map(StockExternalApiDto.YahooResult::meta)
                 .map(StockExternalApiDto.YahooMeta::toDomain)
                 .toList();
     }

@@ -11,9 +11,11 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
     const [isValidInput, setIsValidInput] = useState(true)
     const [searchResults, setSearchResults] = useState([])
     const [apiCacheResults, setApiCacheResults] = useState([])
+    const [isSearching, setIsSearching] = useState(false)
+    const [serverSearchCompleted, setServerSearchCompleted] = useState(false)
     const modalRef = useRef(null)
-
-
+    const searchTimerRef = useRef(null)
+    const lastSearchQueryRef = useRef('')
 
     const handleMouseDown = (e) => {
         if (e.target.closest('.modal-header')) {
@@ -49,33 +51,98 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
         onClose()
     }
 
+    const searchFromServer = async (ticker) => {
+        try {
+            const response = await stockApi.getStockByTicker(ticker)
+            console.log('response : ', response)
+
+            // 서버에서 결과를 찾았으면 그것만 표시, 못 찾았으면 기존 캐시 결과 유지
+            if (response.data && response.data.length > 0) {
+                setSearchResults(response.data)
+            }
+            // 서버에서도 못 찾았으면 캐시의 부분 일치 결과 유지 (searchResults 변경 안 함)
+
+            setServerSearchCompleted(true)
+        } catch (error) {
+            console.log('Server search error:', error)
+            // 에러 발생 시에도 캐시 결과 유지
+            setServerSearchCompleted(true)
+        } finally {
+            setIsSearching(false)
+        }
+    }
+
     const tickerSearch = (query) => {
         setSearchQuery(query)
+        setServerSearchCompleted(false)
+
+        // 기존 타이머 클리어
+        if (searchTimerRef.current) {
+            clearTimeout(searchTimerRef.current)
+        }
 
         if (query.length === 0) {
             setIsValidInput(true)
             setSearchResults([])
+            setIsSearching(false)
+            lastSearchQueryRef.current = ''
             return
         }
 
         const isValid = /^[a-zA-Z0-9]+$/.test(query);
         setIsValidInput(isValid);
 
+        if (!isValid) {
+            setSearchResults([])
+            setIsSearching(false)
+            lastSearchQueryRef.current = ''
+            return
+        }
+
+        // 1. 캐시에서 부분 일치 검색 (즉시 표시)
         const filteredResults = apiCacheResults.filter(stock =>
             stock.ticker?.toLowerCase().includes(query.toLowerCase()) ||
             stock.stockName?.toLowerCase().includes(query.toLowerCase())
         );
 
         setSearchResults(filteredResults)
+
+        // 2. 캐시에서 정확히 일치하는 ticker가 있는지 확인
+        const exactMatch = apiCacheResults.find(stock =>
+            stock.ticker?.toLowerCase() === query.toLowerCase()
+        );
+
+        // 정확한 일치가 있으면 서버 검색 안 함
+        if (exactMatch) {
+            setIsSearching(false)
+            lastSearchQueryRef.current = query
+            return
+        }
+
+        // 3. 검색어 변동이 없으면 서버 검색 (debounce)
+        searchTimerRef.current = setTimeout(() => {
+            // 타이머 실행 시점에 검색어가 변경되지 않았는지 확인
+            if (query === searchQuery) {
+                lastSearchQueryRef.current = query
+                setIsSearching(true)
+                searchFromServer(query)
+            }
+        }, 500)
     }
 
     const initUseState = () => {
         setSearchQuery('')
         setIsValidInput(true)
+        setSearchResults([])
+        setIsSearching(false)
+        setServerSearchCompleted(false)
+        lastSearchQueryRef.current = ''
+        if (searchTimerRef.current) {
+            clearTimeout(searchTimerRef.current)
+        }
     }
 
     useEffect(() => {
-
         initUseState()
 
         if (isOpen && modalRef.current) {
@@ -86,6 +153,11 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
             })
         }
 
+        return () => {
+            if (searchTimerRef.current) {
+                clearTimeout(searchTimerRef.current)
+            }
+        }
     }, [isOpen])
 
     useEffect(() => {
@@ -148,7 +220,7 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
                     )}
                     {searchQuery.length > 0 && isValidInput && (
                         <div className="search-results">
-                            {searchResults.length > 0 ? (
+                            {searchResults.length > 0 && (
                                 <ul className="result-list">
                                     {searchResults.slice(0, 5).map((stock) => (
                                         <li
@@ -163,7 +235,14 @@ export default function StockSearchModal({ isOpen, onClose, selectStockHandler =
                                         </li>
                                     ))}
                                 </ul>
-                            ) : (
+                            )}
+                            {isSearching && (
+                                <div className="loading-container">
+                                    <div className="spinner"></div>
+                                    <p>서버에서 검색 중...</p>
+                                </div>
+                            )}
+                            {!isSearching && searchResults.length === 0 && (
                                 <div className="no-results">검색 결과가 없습니다.</div>
                             )}
                         </div>
