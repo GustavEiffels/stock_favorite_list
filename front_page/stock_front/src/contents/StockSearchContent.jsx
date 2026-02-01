@@ -59,8 +59,8 @@ export default function StockSearchContent({ onStockSelect }) {
         }
 
         const filteredResults = apiCacheResults.filter(stock =>
-            stock.ticker?.toLowerCase().includes(query.toLowerCase()) ||
-            stock.stockName?.toLowerCase().includes(query.toLowerCase())
+            stock.ticker?.toLowerCase().includes(query.toLowerCase())
+            // ||stock.stockName?.toLowerCase().includes(query.toLowerCase())
         )
 
         setSearchResults(filteredResults)
